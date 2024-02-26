@@ -10,10 +10,10 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-    <body className={inter.className}>
-    <div>
+    <body className={`${inter.className} bg-background text-onBackground`}>
+    <main className="max-w-screen-xl mx-auto my-8 text-center px-8">
       {children}
-    </div>
+    </main>
     </body>
     </html>
   );

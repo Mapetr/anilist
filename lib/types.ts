@@ -7,7 +7,6 @@ export type Anime = {
     type: string;
     title: string;
   }[];
-  title_synonyms: string[];
   type: string;
   source: string;
   episodes: number;
@@ -49,6 +48,42 @@ export type Anime = {
   demographics: {
     name: string;
   }[];
+  characters: Character[];
+  staff: Staff[];
+  relations: Relation[];
+}
+
+export type Character = {
+  mal_id: number;
+  character_id: string;
+  name: string;
+  image: string;
+  role: string;
+  voice_actor: VoiceActor;
+}
+
+export type VoiceActor = {
+  mal_id: number;
+  voice_actor_id: string;
+  name: string;
+  language: string;
+  image: string;
+}
+
+export type Staff = {
+  mal_id: number;
+  people_id: string;
+  name: string;
+  image: string;
+  positions: string[];
+}
+
+export type Relation = {
+  mal_id: number;
+  id: string;
+  name: string;
+  type: string;
+  relation: string;
 }
 
 export type SearchResults = {
@@ -65,4 +100,6 @@ export type SearchResult = {
   title: string;
   titles: string[];
   image: string;
+  year: string;
+  type: string;
 }

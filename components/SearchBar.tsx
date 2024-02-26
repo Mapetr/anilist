@@ -3,7 +3,7 @@
 import {useRouter, useSearchParams} from "next/navigation";
 import {ChangeEvent, useEffect, useState} from "react";
 
-export default function SearchBar() {
+export default function SearchBar({autofocus = false}: {autofocus: boolean}) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
@@ -32,7 +32,7 @@ export default function SearchBar() {
 
   return (
     <>
-      <input type="text" onChange={onChange}/>
+        <input className="bg-backgroundContainer caret-primary py-2 px-4 rounded-full focus:outline-none focus:ring focus:border-primary" placeholder="Search" type="text" onChange={onChange} autoFocus={autofocus}/>
     </>
   );
 }

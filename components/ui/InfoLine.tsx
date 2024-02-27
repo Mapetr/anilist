@@ -2,12 +2,9 @@
 
 export default function InfoLine({name, value}: {
   name: string;
-  value: string | number | { name: string }[] | null;
+  value: string | number | string[] | null;
 }) {
-  if (Array.isArray(value)) {
-    value = value.map((v) => v.name).join(", ");
-  }
-
+  if (Array.isArray(value)) value = value.join(", ");
   if (value === "" || !value) value = "None";
 
   return (

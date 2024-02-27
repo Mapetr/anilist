@@ -3,10 +3,7 @@ export type Anime = {
   mal_id: number;
   image: string;
   trailer: string;
-  titles: {
-    type: string;
-    title: string;
-  }[];
+  titles: Title[];
   type: string;
   source: string;
   episodes: number;
@@ -51,6 +48,11 @@ export type Anime = {
   characters: Character[];
   staff: Staff[];
   relations: Relation[];
+}
+
+export type Title = {
+  type: string;
+  title: string;
 }
 
 export type Character = {

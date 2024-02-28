@@ -1,5 +1,3 @@
-'use client'
-
 import {PersonCharacter} from "@/lib/types";
 import Person from "@/components/Person";
 

@@ -1,5 +1,3 @@
-'use client'
-
 import {Relation} from "@/lib/types";
 import Person from "@/components/Person";
 import Link from "next/link";

@@ -1,5 +1,3 @@
-'use client'
-
 export default function InfoLine({name, value, unknown = "None"}: {
   name: string;
   value: string | number | string[] | null;

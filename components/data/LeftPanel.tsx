@@ -1,5 +1,3 @@
-'use client'
-
 import InfoLine from "@/components/ui/InfoLine";
 
 export type LeftPanelProps = {

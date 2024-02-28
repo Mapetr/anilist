@@ -10,22 +10,8 @@ import Staff from "@/components/Staff";
 import Title from "@/components/data/Title";
 import LeftPanel from "@/components/data/LeftPanel";
 import {unwatchFile} from "node:fs";
+import {group, unwrap} from "@/lib/utils";
 
-
-function group(input: Relation[]) {
-  const groups = new Map<string, Relation[]>();
-  for (const relation of input) {
-    if (!groups.has(relation.relation)) {
-      groups.set(relation.relation, []);
-    }
-    groups.get(relation.relation)?.push(relation);
-  }
-  return groups;
-}
-
-function unwrap(input: { name: string }[]) {
-  return input.map(x => x.name);
-}
 
 export default async function Anime({params}: { params: { id: string } }) {
   const anime = await getAnime(params.id);
@@ -50,11 +36,11 @@ export default async function Anime({params}: { params: { id: string } }) {
 
   return (
     <div>
-      <Title titles={anime.titles}/>
+      <Title main={anime.titles.filter(x => x.type === "Default")[0].title} secondary={anime.titles.filter(x => x.type === "English")[0].title}/>
       <Separator/>
       <div className={"flex gap-6"}>
         <LeftPanel image={anime.image} type={anime.type} episodes={anime.episodes} status={anime.status}
-                   broadcast={anime.broadcast.string} aired={anime.aired} duration={anime.duration}
+                   broadcast={anime.broadcast?.string} aired={anime.aired} duration={anime.duration}
                    rating={anime.rating} season={anime.season} genres={unwrap(genres)}
                    themes={unwrap(anime.themes)} demographics={unwrap(anime.demographics)}
                    studios={unwrap(anime.studios)} producers={unwrap(anime.producers)}
@@ -63,22 +49,26 @@ export default async function Anime({params}: { params: { id: string } }) {
           <MainItem title={"Synopsis"}>
             <p className={"block whitespace-pre-wrap mt-2"}>{anime.synopsis}</p>
           </MainItem>
-          <Separator/>
-          <MainItem title={"Background"}>
-            <p className={"block whitespace-pre-wrap mt-2"}>{anime.background}</p>
-          </MainItem>
-          <Separator/>
-          <MainItem title={"Relations"}>
-            <Relations relations={relations}/>
-          </MainItem>
-          <Separator/>
-          <MainItem title={"Characters"}>
-            <Characters characters={anime.characters.filter(x => x.role === "Main")}/>
-          </MainItem>
-          <Separator/>
-          <MainItem title={"Staff"}>
-            <Staff staff={staff}/>
-          </MainItem>
+          {anime.background && anime.background.length > 0 &&
+              <MainItem title={"Background"} separator={true}>
+                  <p className={"block whitespace-pre-wrap mt-2"}>{anime.background}</p>
+              </MainItem>
+          }
+          {anime.relations && anime.relations.length > 0 &&
+              <MainItem title={"Relations"} separator={true}>
+                  <Relations relations={relations}/>
+              </MainItem>
+          }
+          {anime.characters && anime.characters.length > 0 &&
+              <MainItem title={"Characters"} separator={true}>
+                  <Characters characters={anime.characters.filter(x => x.role === "Main")}/>
+              </MainItem>
+          }
+          {anime.staff && anime.staff.length > 0 &&
+              <MainItem title={"Staff"} separator={true}>
+                  <Staff staff={staff}/>
+              </MainItem>
+          }
         </div>
       </div>
     </div>

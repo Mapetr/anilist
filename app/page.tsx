@@ -7,13 +7,12 @@ const search = new MeiliSearch({
   host: "http://127.0.0.1:7700",
   apiKey: "master_key",
 });
-const index = search.index("anime");
-
 
 export default async function Home({searchParams}: {
   searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const query = searchParams["q"]?.toString() ?? "";
+  const category = searchParams["category"]?.toString() ?? "anime";
 
   let results: SearchResults = {
     hits: [],
@@ -24,6 +23,7 @@ export default async function Home({searchParams}: {
     estimatedTotalHits: 0,
   };
   if (query && query.length > 2) {
+    const index = search.index(category);
     results = await index.search(query, {limit: 10});
   }
 
@@ -32,7 +32,7 @@ export default async function Home({searchParams}: {
       <SearchBar autofocus={true}/>
       <div className={"w-[32em] mx-auto"}>
         {results.hits.map((hit, index) => (
-          <Result id={hit.id} title={hit.title} year={hit.year} type={hit.type} image={hit.image} key={index} />
+          <Result id={hit.id} title={hit.name} year={hit.year} type={hit.type} image={hit.image} key={index} />
         ))}
       </div>
     </>

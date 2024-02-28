@@ -6,6 +6,7 @@ import {ChangeEvent, useEffect, useState} from "react";
 export default function SearchBar({autofocus = false}: {autofocus: boolean}) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
+  const [searchCategory, setSearchCategory] = useState('anime');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
   useEffect(() => {
@@ -16,23 +17,33 @@ export default function SearchBar({autofocus = false}: {autofocus: boolean}) {
     return () => {
       clearTimeout(timerId);
     };
-  }, [searchTerm]);
+  }, [searchCategory, searchTerm]);
 
   useEffect(() => {
     if (debouncedSearchTerm) {
-      router.push("/?q=" + encodeURIComponent(debouncedSearchTerm));
+      router.push(`/?category=${searchCategory}&q=` + encodeURIComponent(debouncedSearchTerm));
     } else {
       router.push("/");
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, searchCategory]);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   }
 
   return (
-    <>
-        <input className="bg-backgroundContainer caret-primary py-2 px-4 rounded-full focus:outline-none focus:ring focus:border-primary" placeholder="Search" type="text" onChange={onChange} autoFocus={autofocus}/>
-    </>
+    <div className={"flex gap-6 justify-center"}>
+      <select onChange={(x) => {
+        setSearchCategory(x.target.value);
+      }} className={"bg-backgroundContainer rounded-lg h-8 p-1 px-2 self-center"}>
+        <option value={"anime"}>Anime</option>
+        <option value={"manga"}>Manga</option>
+        <option value={"characters"}>Characters</option>
+        <option value={"people"}>People</option>
+      </select>
+      <input
+        className="bg-backgroundContainer caret-primary py-2 px-4 rounded-lg focus:outline-none focus:ring focus:border-primary"
+        placeholder="Search" type="text" onChange={onChange} autoFocus={autofocus}/>
+    </div>
   );
 }

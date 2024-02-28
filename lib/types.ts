@@ -91,11 +91,13 @@ export type SearchResults = {
 
 export type SearchResult = {
   id: string;
-  title: string;
-  titles: string[];
+  name: string;
+  name_kanji?: string;
+  nicknames?: string[];
+  titles?: string[];
   image: string;
-  year: string;
-  type: string;
+  year?: string;
+  type?: string;
 }
 
 export type Manga = {

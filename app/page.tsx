@@ -3,15 +3,17 @@ import {MeiliSearch} from "meilisearch";
 import {SearchResult, SearchResults} from "@/lib/types";
 import Result from "@/components/Result";
 
+let search: MeiliSearch;
 const host = process.env.MEILI_HOST;
-if (!host) throw new Error("NEXT_PUBLIC_MEILISEARCH_HOST is not defined");
 const master_key = process.env.MEILI_MASTER_KEY;
-if (!master_key) throw new Error("MEILI_MASTER_KEY is not defined");
-
-const search = new MeiliSearch({
-  host: host,
-  apiKey: master_key,
-});
+if (host && master_key) {
+  search = new MeiliSearch({
+    host: host,
+    apiKey: master_key,
+  });
+} else {
+  console.error("No MEILI_HOST or MEILI_MASTER_KEY found");
+}
 
 export default async function Home({searchParams}: {
   searchParams: { [key: string]: string | string[] | undefined }
@@ -27,7 +29,7 @@ export default async function Home({searchParams}: {
     offset: 0,
     estimatedTotalHits: 0,
   };
-  if (query && query.length > 2) {
+  if (query && query.length > 2 && search) {
     const index = search.index(category);
     results = await index.search(query, {limit: 10});
   }

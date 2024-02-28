@@ -2,7 +2,9 @@ import {unstable_cache} from "next/cache";
 import {MongoClient, ObjectId} from "mongodb";
 import {Anime, Character, Manga, Person} from "@/lib/types";
 
-const uri = "mongodb://root:password@localhost:27017";
+const uri = process.env.MONGODB_URI as string;
+if (!uri) throw new Error("MONGODB_URI is not defined");
+
 const client = new MongoClient(uri);
 const db = client.db("anime");
 const animeColl = db.collection("anime");

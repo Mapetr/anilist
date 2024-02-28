@@ -38,7 +38,7 @@ export default function SearchBar({autofocus = false}: {autofocus: boolean}) {
       }} className={"bg-backgroundContainer rounded-lg h-8 p-1 px-2 self-center"}>
         <option value={"anime"}>Anime</option>
         <option value={"manga"}>Manga</option>
-        <option value={"characters"}>Characters</option>
+        <option value={"character"}>Character</option>
         <option value={"people"}>People</option>
       </select>
       <input

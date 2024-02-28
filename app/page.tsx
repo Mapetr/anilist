@@ -3,9 +3,14 @@ import {MeiliSearch} from "meilisearch";
 import {SearchResult, SearchResults} from "@/lib/types";
 import Result from "@/components/Result";
 
+const host = process.env.MEILI_HOST;
+if (!host) throw new Error("NEXT_PUBLIC_MEILISEARCH_HOST is not defined");
+const master_key = process.env.MEILI_MASTER_KEY;
+if (!master_key) throw new Error("MEILI_MASTER_KEY is not defined");
+
 const search = new MeiliSearch({
-  host: "http://127.0.0.1:7700",
-  apiKey: "master_key",
+  host: host,
+  apiKey: master_key,
 });
 
 export default async function Home({searchParams}: {
@@ -31,8 +36,9 @@ export default async function Home({searchParams}: {
     <>
       <SearchBar autofocus={true}/>
       <div className={"w-[32em] mx-auto"}>
+        {results.estimatedTotalHits === 0 && query.length > 3 && <p>No results found for <b>{query}</b></p>}
         {results.hits.map((hit, index) => (
-          <Result id={hit.id} title={hit.name} year={hit.year} type={hit.type} image={hit.image} key={index} />
+          <Result id={hit.id} title={hit.name} category={category} year={hit.year} type={hit.type} image={hit.image} key={index} />
         ))}
       </div>
     </>
